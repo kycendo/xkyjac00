@@ -1,0 +1,91 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using Mapbox.Unity.Map;
+using Mapbox.Utils;
+using UnityEngine;
+
+public class GPSManager : Singleton<GPSManager>
+{
+
+    public AbstractMap Map;
+    public Transform Camera;
+
+    public static float droneUpdateInterval = 0.02f;
+
+    private Drone drone;
+    private float nextUpdate = 0f;
+
+    private bool connectedToServer = false;
+
+    private void Start()
+    {
+        WebSocketManager.Instance.OnConnectedToServer += OnConnectedToServer;
+
+        // Generate Unique ID for our drone
+        drone = new Drone(Camera.gameObject, new DroneFlightData());
+        drone.FlightData.DroneId = "HoloLens2_Pilot";
+        DroneManager.Instance.Drones.Add(drone);
+    }
+
+    private void OnConnectedToServer(object sender, EventArgs e)
+    {
+        connectedToServer = true;
+    }
+
+    private void Update()
+    {
+        if (connectedToServer)
+        {
+            if (nextUpdate > droneUpdateInterval)
+            {
+                nextUpdate = 0f;
+                Vector2d latitudelongitude = Map.WorldToGeoPosition(Camera.position);
+                float groundAltitude = Map.QueryElevationInUnityUnitsAt(latitudelongitude);
+                //float groundAltitude = Camera.localPosition.y;
+                drone.FlightData.SetData(groundAltitude + 1.76f, latitudelongitude.x, latitudelongitude.y, pitch: Camera.eulerAngles.x, roll: Camera.eulerAngles.z, yaw: Camera.eulerAngles.y, 0);
+                WebSocketManager.Instance.SendDataToServer(JsonUtility.ToJson(drone.FlightData));
+            }
+            nextUpdate += Time.deltaTime;
+        }
+    }
+
+
+    public void SetGPS()
+    {
+        Drone djiDrone = DroneManager.Instance.ControlledDrone;
+        if (djiDrone != null)
+        {
+            //drone.UpdateDronePosition(djiDrone.FlightData.Latitude, djiDrone.FlightData.Longitude);
+            //Map.SetCenterLatitudeLongitude(new Vector2d(djiDrone.FlightData.Latitude, djiDrone.FlightData.Longitude));
+
+            SetCameraPositionToDrone(djiDrone);
+        }
+        else if (DroneManager.Instance.Drones.Count > 0)
+        {
+            foreach (Drone drone in DroneManager.Instance.Drones)
+            {
+                if (!drone.FlightData.DroneId.StartsWith("HoloLens2"))
+                {
+                    djiDrone = drone;
+                    break;
+                }
+            }
+            //drone.UpdateDronePosition(djiDrone.FlightData.Latitude, djiDrone.FlightData.Longitude);
+            //Map.SetCenterLatitudeLongitude(new Vector2d(djiDrone.FlightData.Latitude, djiDrone.FlightData.Longitude));
+
+            SetCameraPositionToDrone(djiDrone);
+        }
+    }
+
+    private void SetCameraPositionToDrone(Drone drone)
+    {
+        // update map center position
+        Map.UpdateMap(new Vector2d(drone.FlightData.Latitude, drone.FlightData.Longitude));
+
+        Vector3 position = Map.GeoToWorldPosition(new Vector2d(drone.FlightData.Latitude, drone.FlightData.Longitude));
+        Camera.parent.position = new Vector3(position.x, Camera.parent.position.y, position.z);
+        Camera.localPosition = new Vector3(0, UserProfileManager.Instance.Height, 0);
+        Camera.eulerAngles = new Vector3(Camera.eulerAngles.x, drone.DroneGameObject.transform.eulerAngles.y, Camera.eulerAngles.z);
+    }
+}
