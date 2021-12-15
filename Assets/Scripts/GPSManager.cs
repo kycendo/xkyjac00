@@ -11,7 +11,7 @@ public class GPSManager : Singleton<GPSManager>
     public AbstractMap Map;
     public Transform Camera;
 
-    public static float droneUpdateInterval = 0.02f;
+    public static float droneUpdateInterval = 0.1f;
 
     private Drone drone;
     private float nextUpdate = 0f;

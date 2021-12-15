@@ -855,7 +855,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad8878a530e52ab40ad0cc683854a034, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ServerHostname: localhost
+  ServerHostname: 147.229.14.181
   Port: 5555
 --- !u!1 &235684506
 GameObject:
@@ -2189,7 +2189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83d9acc7968244a8886f3af591305bcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activeProfile: {fileID: 11400000, guid: cb87208bd27c2054d9362e743d4d55fe, type: 2}
+  activeProfile: {fileID: 11400000, guid: cf0c70f9701f56440b03b186cfc0000a, type: 2}
 --- !u!4 &777972390
 Transform:
   m_ObjectHideFlags: 0
@@ -3160,7 +3160,7 @@ PrefabInstance:
     - target: {fileID: 114478715909612932, guid: e6b749c6d877f4c19a5a5c3c0783d53b,
         type: 3}
       propertyPath: _options.locationOptions.latitudeLongitude
-      value: 49.226369, 16.595546
+      value: 49.22696888864589, 16.59515206265149
       objectReference: {fileID: 0}
     - target: {fileID: 114478715909612932, guid: e6b749c6d877f4c19a5a5c3c0783d53b,
         type: 3}
@@ -6073,8 +6073,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0751fd413f79f5347b1dd1d9dd86b29b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Height: 1.9
-  DroneName: Drone01
+  Height: 1.75
+  DroneName: dji_mavic
   Username: test
 --- !u!23 &776612311760893598
 MeshRenderer:

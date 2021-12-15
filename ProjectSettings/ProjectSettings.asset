@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: DefaultCompany
-  productName: dron_indoor_Alpha
+  productName: drone_outdoor_alpha
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -143,7 +143,7 @@ PlayerSettings:
       minimumSupportedHeadTracking: 0
       maximumSupportedHeadTracking: 1
     hololens:
-      depthFormat: 0
+      depthFormat: 1
       depthBufferSharingEnabled: 1
     lumin:
       depthFormat: 0
@@ -591,16 +591,16 @@ PlayerSettings:
   apiCompatibilityLevelPerPlatform: {}
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: dronIndoorAlpha
+  metroPackageName: droneOutdoorAplha
   metroPackageVersion: 1.0.0.0
   metroCertificatePath: Assets\WSATestCertificate.pfx
   metroCertificatePassword: 
   metroCertificateSubject: DefaultCompany
   metroCertificateIssuer: DefaultCompany
   metroCertificateNotAfter: 808a7c372d30d801
-  metroApplicationDescription: dronIndoorAlpha
+  metroApplicationDescription: DroneOutdoor
   wsaImages: {}
-  metroTileShortName: 
+  metroTileShortName: drone_outdoor_alpha
   metroTileShowName: 0
   metroMediumTileShowName: 0
   metroLargeTileShowName: 0
@@ -628,8 +628,8 @@ PlayerSettings:
       HumanInterfaceDevice: False
       InputInjectionBrokered: False
       InternetClient: True
-      InternetClientServer: False
-      Location: False
+      InternetClientServer: True
+      Location: True
       LowLevelDevices: False
       Microphone: True
       MusicLibrary: False
@@ -639,7 +639,7 @@ PlayerSettings:
       PhoneCallHistoryPublic: False
       PicturesLibrary: False
       PointOfService: False
-      PrivateNetworkClientServer: False
+      PrivateNetworkClientServer: True
       Proximity: False
       RecordedCallsFolder: False
       RemoteSystem: False
