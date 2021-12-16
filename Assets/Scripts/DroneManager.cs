@@ -72,7 +72,8 @@ public class DroneManager : Singleton<DroneManager>
         bool droneFound = false;
         foreach (var drone in Drones)
         {
-            if (!droneFound && drone.FlightData.DroneId.StartsWith(droneID))
+            if ((!droneFound && drone.FlightData.DroneId.StartsWith(droneID)) ||
+                (drone.FlightData.DroneId != "HoloLens2_Pilot"))
             {
                 drone.IsControlled = true;
                 ControlledDrone = drone;
