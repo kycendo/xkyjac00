@@ -241,7 +241,6 @@ public class HeadUpDisplay : MonoBehaviour
         // based on distace to user, gameObject mirror drone is active or non-active
         if (distanceToUser < 1.0f)
         {
-
             mirrorDrone.gameObject.SetActive(false);
         }
         else

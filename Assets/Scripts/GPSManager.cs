@@ -43,7 +43,7 @@ public class GPSManager : Singleton<GPSManager>
                 Vector2d latitudelongitude = Map.WorldToGeoPosition(Camera.position);
                 float groundAltitude = Map.QueryElevationInUnityUnitsAt(latitudelongitude);
                 //float groundAltitude = Camera.localPosition.y;
-                drone.FlightData.SetData(groundAltitude + 1.76f, latitudelongitude.x, latitudelongitude.y, pitch: Camera.eulerAngles.x, roll: Camera.eulerAngles.z, yaw: Camera.eulerAngles.y, 0);
+                drone.FlightData.SetData(groundAltitude + UserProfileManager.Instance.Height - 0.15, latitudelongitude.x, latitudelongitude.y, pitch: Camera.eulerAngles.x, roll: Camera.eulerAngles.z, yaw: Camera.eulerAngles.y, 0);
                 WebSocketManager.Instance.SendDataToServer(JsonUtility.ToJson(drone.FlightData));
             }
             nextUpdate += Time.deltaTime;
@@ -82,9 +82,9 @@ public class GPSManager : Singleton<GPSManager>
     {
         // update map center position
         Map.UpdateMap(new Vector2d(drone.FlightData.Latitude, drone.FlightData.Longitude));
+        drone.DroneGameObject.transform.position = Camera.transform.position;
 
-        Vector3 position = Map.GeoToWorldPosition(new Vector2d(drone.FlightData.Latitude, drone.FlightData.Longitude));
-        Camera.parent.position = new Vector3(position.x, Camera.parent.position.y, position.z);
+        Camera.parent.position = new Vector3(0, Camera.parent.position.y, 0);
         Camera.localPosition = new Vector3(0, UserProfileManager.Instance.Height, 0);
         Camera.eulerAngles = new Vector3(Camera.eulerAngles.x, drone.DroneGameObject.transform.eulerAngles.y, Camera.eulerAngles.z);
     }

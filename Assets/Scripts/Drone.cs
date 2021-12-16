@@ -49,6 +49,10 @@ public class Drone {
             // ground altitude has to be calculated from camera location
             float groundAltitude = DroneManager.Instance.Map.QueryElevationInUnityUnitsAt(DroneManager.Instance.Map.WorldToGeoPosition(GPSManager.Instance.Camera.position));
             position3d.y = (float) FlightData.Altitude - groundAltitude;
+            if (!DroneManager.RunningInUnityEditor)
+            {
+                position3d.y = position3d.y - UserProfileManager.Instance.Height;
+            }
         }
         DroneGameObject.transform.position = position3d;
         DroneGameObject.transform.eulerAngles = new Vector3((float) FlightData.Pitch, (float) FlightData.Yaw + (float) FlightData.Compass, (float) FlightData.Roll);

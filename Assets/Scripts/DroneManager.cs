@@ -12,7 +12,7 @@ public class DroneManager : Singleton<DroneManager>
     public AbstractMap Map;
     public GameObject DroneBoundingBox;
     public GameObject ControlledDroneGameObject;
-
+    public static bool RunningInUnityEditor = Application.isEditor;
     public void AddDrone(DroneFlightData flightData)
     {
         Mapbox.Utils.Vector2d mapboxPosition = new Mapbox.Utils.Vector2d(flightData.Latitude, flightData.Longitude);
@@ -28,7 +28,16 @@ public class DroneManager : Singleton<DroneManager>
 
     public void HandleReceivedDroneData(string data)
     {
-        DroneFlightData flightData = JsonUtility.FromJson<DroneFlightData>(data);
+        DroneFlightData flightData = null;
+        try
+        {
+            flightData = JsonUtility.FromJson<DroneFlightData>(data);
+        }
+        catch(ArgumentException e)
+        {
+            return;
+        }
+        
         foreach (Drone drone in Drones)
         {
             // Drone is already present and instaciated, we found it, just update position

@@ -27,9 +27,10 @@ MonoBehaviour:
   boundarySystemType:
     reference: 
   boundaryVisualizationProfile: {fileID: 0}
-  enableTeleportSystem: 0
+  enableTeleportSystem: 1
   teleportSystemType:
-    reference: 
+    reference: Microsoft.MixedReality.Toolkit.Teleport.MixedRealityTeleportSystem,
+      Microsoft.MixedReality.Toolkit.Services.TeleportSystem
   enableSpatialAwarenessSystem: 1
   spatialAwarenessSystemType:
     reference: Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessSystem,
