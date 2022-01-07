@@ -83,9 +83,11 @@ public class GPSManager : Singleton<GPSManager>
         // update map center position
         Map.UpdateMap(new Vector2d(drone.FlightData.Latitude, drone.FlightData.Longitude));
         drone.DroneGameObject.transform.position = Camera.transform.position;
-
-        Camera.parent.position = new Vector3(0, Camera.parent.position.y, 0);
-        Camera.localPosition = new Vector3(0, UserProfileManager.Instance.Height, 0);
-        Camera.eulerAngles = new Vector3(Camera.eulerAngles.x, drone.DroneGameObject.transform.eulerAngles.y, Camera.eulerAngles.z);
+        if (DroneManager.RunningInUnityEditor)
+        {
+            Camera.parent.position = new Vector3(0, Camera.parent.position.y, 0);
+            Camera.localPosition = new Vector3(0, UserProfileManager.Instance.Height, 0);
+            Camera.eulerAngles = new Vector3(Camera.eulerAngles.x, drone.DroneGameObject.transform.eulerAngles.y, Camera.eulerAngles.z);
+        }    
     }
 }
