@@ -7,6 +7,7 @@ public class UserProfileManager : Singleton<UserProfileManager>
     public float Height;
     public string DroneName;
     public string Username;
+    public int DroneThreshold;
     // Start is called before the first frame update
     void Start()
     {

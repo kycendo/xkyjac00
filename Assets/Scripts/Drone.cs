@@ -56,7 +56,7 @@ public class Drone {
             position3d.y -= UserProfileManager.Instance.Height;
         }
         DroneGameObject.transform.position = position3d;
-        DroneGameObject.transform.eulerAngles = new Vector3((float) FlightData.Pitch, (float) FlightData.Yaw + (float) FlightData.Compass, (float) FlightData.Roll);
+        DroneGameObject.transform.eulerAngles = new Vector3((float) FlightData.Pitch, (float) FlightData.Yaw, (float) FlightData.Roll);
     }
 
     public void UpdateDronePosition(double latitude, double longitude) {
