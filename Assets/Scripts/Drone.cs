@@ -42,6 +42,7 @@ public class Drone {
 
         Vector2d mapboxPosition = new Vector2d(FlightData.Latitude, FlightData.Longitude);
         Vector3 position3d = DroneManager.Instance.Map.GeoToWorldPosition(mapboxPosition, false);
+
         if (FlightData.DroneId == "DJI-Mavic2" || FlightData.DroneId == "DJI-MAVIC_PRO") {
             //float groundAltitude = DroneManager.Instance.Map.QueryElevationInUnityUnitsAt(DroneManager.Instance.Map.WorldToGeoPosition(position3d));
             //position3d.y = groundAltitude + (float) FlightData.Height;
@@ -55,12 +56,22 @@ public class Drone {
         {
             position3d.y -= UserProfileManager.Instance.Height;
         }
-        DroneGameObject.transform.position = position3d;
+
+        if (CheckThreshold(DroneGameObject.transform.position, position3d))
+        {
+            DroneGameObject.transform.position = position3d;
+        }
+           
         DroneGameObject.transform.eulerAngles = new Vector3((float) FlightData.Pitch, (float) FlightData.Yaw, (float) FlightData.Roll);
     }
 
     public void UpdateDronePosition(double latitude, double longitude) {
         FlightData.Latitude = latitude;
         FlightData.Longitude = longitude;
+    }
+
+    private bool CheckThreshold(Vector3 point1, Vector3 point2)
+    {
+        return Vector3.Distance(point1, point2) > (float)(UserProfileManager.Instance.DroneThreshold);
     }
 }
