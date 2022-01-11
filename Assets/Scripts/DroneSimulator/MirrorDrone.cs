@@ -187,8 +187,8 @@ namespace DroneSimulator
             // mirroring rotation
             transform.rotation = drone.rotation;
 
-           speedVelocity = (drone.transform.position - previousPosition).magnitude / (GPSManager.droneUpdateInterval);
-           speedDirection = ((drone.transform.position - previousPosition) * 50);
+            speedVelocity = 0.0f;//(drone.transform.position - previousPosition).magnitude / (GPSManager.droneUpdateInterval);
+            speedDirection = ((drone.transform.position - previousPosition) * 50);
 
             previousPosition = drone.transform.position;
 
