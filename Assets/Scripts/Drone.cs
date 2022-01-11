@@ -3,6 +3,7 @@ using Mapbox.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Drone {
@@ -22,11 +23,18 @@ public class Drone {
     public float RelativeAltitude {
         get
         {
+            if (this.DronesWithZeroAltitude.Contains(FlightData.DroneId))
+            {
+                return (float)FlightData.Altitude;
+            }
+
             var latlong = new Vector2d(FlightData.Latitude, FlightData.Longitude);
             var groundAltitude = DroneManager.Instance.Map.QueryElevationInUnityUnitsAt(latlong);
             return (float)FlightData.Altitude - groundAltitude;
         }
     }
+
+    private readonly IEnumerable<string> DronesWithZeroAltitude = new List<string>{ "DJI-Mavic2", "DJI-MAVIC_PRO" };
 
     public Drone(GameObject droneGameObject, DroneFlightData flightData, bool isControlled=false) {
         DroneGameObject = droneGameObject;
@@ -44,8 +52,6 @@ public class Drone {
         Vector3 position3d = DroneManager.Instance.Map.GeoToWorldPosition(mapboxPosition, false);
 
         if (FlightData.DroneId == "DJI-Mavic2" || FlightData.DroneId == "DJI-MAVIC_PRO") {
-            //float groundAltitude = DroneManager.Instance.Map.QueryElevationInUnityUnitsAt(DroneManager.Instance.Map.WorldToGeoPosition(position3d));
-            //position3d.y = groundAltitude + (float) FlightData.Height;
             position3d.y = (float)FlightData.Altitude;
         } else {
             // ground altitude has to be calculated from camera location
@@ -62,7 +68,7 @@ public class Drone {
             DroneGameObject.transform.position = position3d;
         }
            
-        DroneGameObject.transform.eulerAngles = new Vector3((float) FlightData.Pitch, (float) FlightData.Yaw, (float) FlightData.Roll);
+        DroneGameObject.transform.eulerAngles = new Vector3((float) -FlightData.Pitch, (float) FlightData.Yaw, (float) -FlightData.Roll);
     }
 
     public void UpdateDronePosition(double latitude, double longitude) {

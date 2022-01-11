@@ -29,14 +29,11 @@ public class DroneManager : Singleton<DroneManager>
     public void HandleReceivedDroneData(string data)
     {
         DroneFlightData flightData = null;
-        int decimals = 5;
         try
         {
             flightData = JsonUtility.FromJson<DroneFlightData>(data);
-            // flightData.Latitude = Math.Round(flightData.Latitude, decimals);
-            // flightData.Longitude = Math.Round(flightData.Longitude, decimals);
         }
-        catch(ArgumentException e)
+        catch(ArgumentException)
         {
             return;
         }
