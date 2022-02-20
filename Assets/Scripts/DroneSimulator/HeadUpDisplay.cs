@@ -128,6 +128,7 @@ public class HeadUpDisplay : MonoBehaviour
         viewPos.x = (viewPos.x - (canvas.rect.width / 2)) * 2 + (canvas.rect.width / 2);
         viewPos.y = (viewPos.y - (canvas.rect.height / 2)) * 2 + (canvas.rect.height / 2);
         HUD.anchoredPosition = new Vector3(viewPos.x, viewPos.y, 0.0f);
+        canvas.GetComponent<Canvas>().planeDistance = distanceToUser;
     }
 
     private bool CheckIfDroneConnected()
@@ -166,9 +167,11 @@ public class HeadUpDisplay : MonoBehaviour
             return;
         }
 
+        // Distance to user has to be calculated first because it is used in SetTarget() as well
+        distanceToUser = Vector3.Distance(MainCamera.position, drone.position);
+
         SetTarget();
 
-        distanceToUser = Vector3.Distance(MainCamera.position, drone.position);
         distanceText.text = Mathf.Round(distanceToUser * 100.0f) * 0.01f + "m"; //Rounding
 
         altitude = droneManager.ControlledDrone.RelativeAltitude;

@@ -41,6 +41,12 @@ public class UserProfileManager : Singleton<UserProfileManager>
         }    
     }
 
+    public void ToggleDroneModel()
+    {
+        var droneModel = DroneManager.Instance.ControlledDroneGameObject;
+        droneModel.SetActive(!droneModel.activeSelf);
+    }
+
     private void SetThresholdText()
     {
         TresholdSetting.text = string.Format("{0:0.0}", DroneThreshold);
