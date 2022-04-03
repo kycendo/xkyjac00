@@ -79,5 +79,5 @@ public class Drone {
     private bool CheckThreshold(Vector3 point1, Vector3 point2)
     {
         return Vector3.Distance(point1, point2) > (float)(UserProfileManager.Instance.DroneThreshold);
-    }
+    }z
 }

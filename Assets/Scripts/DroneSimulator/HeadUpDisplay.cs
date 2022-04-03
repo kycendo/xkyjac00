@@ -29,6 +29,7 @@ public class HeadUpDisplay : MonoBehaviour
     public Transform mirrorDrone;
     RectTransform HUD;
     public RectTransform navigationArrow;
+    public LineRenderer lineRenderer;
     public RectTransform canvas;
 
     public Text distanceText;
@@ -43,6 +44,7 @@ public class HeadUpDisplay : MonoBehaviour
 
     private DroneManager droneManager;
     private bool controlledDroneFound = false;
+    private Transform NavigationLineAnchor;
     private float nextUpdate;
     // Start is called before the first frame update
     public void CustomStart()
@@ -51,6 +53,7 @@ public class HeadUpDisplay : MonoBehaviour
         HUD = transform.gameObject.GetComponent<RectTransform>();
         altitutudeRenderer = altitudeIndicator.gameObject.GetComponent<Renderer>();
         altitudeTextTransform = altitudeText.gameObject.GetComponent<RectTransform>();
+        NavigationLineAnchor = mirrorDrone.transform.Find("NavigationLineAnchor");
 
         droneManager = DroneManager.Instance;
 
@@ -124,11 +127,14 @@ public class HeadUpDisplay : MonoBehaviour
     /// </summary>
     public void SetTarget()
     {
-        Vector3 viewPos = Camera.main.WorldToScreenPoint(drone.transform.position);
-        viewPos.x = (viewPos.x - (canvas.rect.width / 2)) * 2 + (canvas.rect.width / 2);
-        viewPos.y = (viewPos.y - (canvas.rect.height / 2)) * 2 + (canvas.rect.height / 2);
-        HUD.anchoredPosition = new Vector3(viewPos.x, viewPos.y, 0.0f);
-        canvas.GetComponent<Canvas>().planeDistance = distanceToUser;
+        canvas.position = droneManager.ControlledDroneGameObject.transform.position;
+        transform.rotation = Quaternion.LookRotation(transform.position - Camera.main.transform.position);
+        this.transform.localScale = new Vector3(distanceToUser, distanceToUser, distanceToUser);
+        //Vector3 viewPos = Camera.main.WorldToScreenPoint(drone.transform.position);
+        //viewPos.x = (viewPos.x - (canvas.rect.width / 2)) * 2 + (canvas.rect.width / 2);
+        //viewPos.y = (viewPos.y - (canvas.rect.height / 2)) * 2 + (canvas.rect.height / 2);
+        //HUD.anchoredPosition = new Vector3(viewPos.x, viewPos.y, 0.0f);
+        //canvas.GetComponent<Canvas>().planeDistance = distanceToUser;
     }
 
     private bool CheckIfDroneConnected()
@@ -155,6 +161,8 @@ public class HeadUpDisplay : MonoBehaviour
             transform.GetChild(i).gameObject.SetActive(active);
         }
         navigationArrow.gameObject.SetActive(active);
+        lineRenderer.gameObject.SetActive(active);
+        lineRenderer.positionCount = 3;
         this.gameObject.GetComponent<Image>().enabled = active;
     }
 
@@ -229,17 +237,42 @@ public class HeadUpDisplay : MonoBehaviour
 
         //visibility of TARGET, showing navigation arrow
         bool isVisible = IsVisibleFrom(HUD, Camera.main);
-        if (isVisible)
-            navigationArrow.gameObject.SetActive(false);
+        //navigationArrow.gameObject.SetActive(true);
+        //Vector3 targetDirection = (HUD.anchoredPosition - new Vector2((canvas.rect.width / 2), (canvas.rect.height / 2))).normalized;
+        //float angleTargetDirection = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg;
+        //navigationArrow.localEulerAngles = new Vector3(0, 0, angleTargetDirection);
+        //navigationArrow.anchoredPosition = new Vector3((canvas.rect.width / 2), (canvas.rect.height / 2), 0.0f) + (targetDirection * NavigationArrowOffset);
+        var distanceTextY = distanceText.transform.position.y;
+        var cameraPosition = MainCamera.position;           
+        var dronePosition = drone.position;
+        var modifiedAnchor = dronePosition;
+        if(Physics.Raycast(MainCamera.position, Vector3.down, out var hitInfo))
+        {
+            dronePosition.y = hitInfo.point.y;
+            cameraPosition.y = hitInfo.point.y;
+        }
         else
         {
-            //((canvas.rect.width / 2), (canvas.rect.height / 2)) --) center of canvas
-            navigationArrow.gameObject.SetActive(true);
-            Vector3 targetDirection = (HUD.anchoredPosition - new Vector2((canvas.rect.width / 2), (canvas.rect.height / 2))).normalized;
-            float angleTargetDirection = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg;
-            navigationArrow.localEulerAngles = new Vector3(0, 0, angleTargetDirection);
-            navigationArrow.anchoredPosition = new Vector3((canvas.rect.width / 2), (canvas.rect.height / 2), 0.0f) + (targetDirection * NavigationArrowOffset);
+            dronePosition.y = 0;
+            cameraPosition.y = 0f;
         }
+
+        // Anchor position needs to be modified. When drone is inclinated, anchor X,Z positions are slightly changed
+        modifiedAnchor.y = NavigationLineAnchor.position.y;
+
+        Vector3[] linePoints;
+
+        if (distanceToUser < 2 || distanceTextY < 0.5)
+        {
+            lineRenderer.positionCount = 2;
+            linePoints = new Vector3[] { cameraPosition, modifiedAnchor };
+        }
+        else
+        {
+            lineRenderer.positionCount = 3;
+            linePoints = new Vector3[] { cameraPosition, dronePosition, modifiedAnchor };
+        }
+        lineRenderer.SetPositions(linePoints);
 
         // based on distace to user, gameObject mirror drone is active or non-active
         if (distanceToUser < 1.0f)

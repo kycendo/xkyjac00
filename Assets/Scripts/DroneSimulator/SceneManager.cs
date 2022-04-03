@@ -42,9 +42,8 @@ namespace DroneSimulator
         private void Update()
         {
             inputController.GetFlightCommmands();
-            // Do not display canvas if no controlled drone was found
-            //TryDisplayUI();
-            RunFrame();         
+            
+            //RunFrame();
         }
 
         private void TryDisplayUI(bool isStartup=false)
