@@ -38,6 +38,14 @@ public class DroneManager : Singleton<DroneManager>
             return;
         }
         
+        // If drone sends its location as NaN set Lat and Log to coordinates set in mapbox as center
+        if (double.IsNaN(flightData.Latitude) || double.IsNaN(flightData.Longitude))
+        {
+            var mapboxLatLong = Map.CenterLatitudeLongitude;
+            flightData.Longitude = mapboxLatLong.y;
+            flightData.Latitude = mapboxLatLong.x;
+        }
+
         foreach (Drone drone in Drones)
         {
             // Drone is already present and instaciated, we found it, just update position
@@ -102,6 +110,9 @@ public class DroneFlightData
     public double Roll;
     public double Yaw;
     public double Compass;
+    public double VelocityX;
+    public double VelocityY;
+    public double VelocityZ;
 
     public DroneFlightData()
     {

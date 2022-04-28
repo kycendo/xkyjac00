@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using TMPro;
 
 public class UserProfileManager : Singleton<UserProfileManager>
 {
@@ -12,12 +7,17 @@ public class UserProfileManager : Singleton<UserProfileManager>
     public string Username;
     public decimal DroneThreshold;
     public TextMeshPro TresholdSetting;
+    public TrackingTypeEnum TrackingType;
+    public TextMeshPro TrackingTypeText;
+    public bool DisplayControlledDrone;
 
     private readonly decimal Increasement = 0.1m;
+    private readonly string TrackingTypeTemplate = "Current tracking by\n{0}";
     // Start is called before the first frame update
     void Start()
     {
         TresholdSetting.text = "0";
+        TrackingTypeText.text = string.Format(TrackingTypeTemplate, TrackingType.ToString());
     }
 
     // Update is called once per frame
@@ -47,8 +47,33 @@ public class UserProfileManager : Singleton<UserProfileManager>
         droneModel.SetActive(!droneModel.activeSelf);
     }
 
+    public void ToggleTrackingType()
+    {
+        if (TrackingType == TrackingTypeEnum.GPS)
+        {
+            TrackingType = TrackingTypeEnum.IMU;
+        }
+        else
+        {
+            TrackingType = TrackingTypeEnum.GPS;
+        }
+
+        TrackingTypeText.text = string.Format(TrackingTypeTemplate, TrackingType.ToString());
+    }
+
+    public void ToggleControlledDroneDisplay()
+    {
+        DisplayControlledDrone = !DisplayControlledDrone;
+    }
+
     private void SetThresholdText()
     {
         TresholdSetting.text = string.Format("{0:0.0}", DroneThreshold);
     }
+}
+
+public enum TrackingTypeEnum
+{
+    GPS,
+    IMU
 }

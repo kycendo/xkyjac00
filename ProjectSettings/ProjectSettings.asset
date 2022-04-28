@@ -593,11 +593,11 @@ PlayerSettings:
   m_MobileRenderingPath: 1
   metroPackageName: droneOutdoorAplha
   metroPackageVersion: 1.0.0.0
-  metroCertificatePath: Assets\WSATestCertificate.pfx
+  metroCertificatePath: Assets/WSATestCertificate.pfx
   metroCertificatePassword: 
   metroCertificateSubject: DefaultCompany
   metroCertificateIssuer: DefaultCompany
-  metroCertificateNotAfter: 808a7c372d30d801
+  metroCertificateNotAfter: 00e8faec4e6ad901
   metroApplicationDescription: DroneOutdoor
   wsaImages: {}
   metroTileShortName: drone_outdoor_alpha

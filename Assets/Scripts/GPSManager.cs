@@ -56,9 +56,6 @@ public class GPSManager : Singleton<GPSManager>
         Drone djiDrone = DroneManager.Instance.ControlledDrone;
         if (djiDrone != null)
         {
-            //drone.UpdateDronePosition(djiDrone.FlightData.Latitude, djiDrone.FlightData.Longitude);
-            //Map.SetCenterLatitudeLongitude(new Vector2d(djiDrone.FlightData.Latitude, djiDrone.FlightData.Longitude));
-
             SetCameraPositionToDrone(djiDrone);
         }
         else if (DroneManager.Instance.Drones.Count > 0)
@@ -71,8 +68,6 @@ public class GPSManager : Singleton<GPSManager>
                     break;
                 }
             }
-            //drone.UpdateDronePosition(djiDrone.FlightData.Latitude, djiDrone.FlightData.Longitude);
-            //Map.SetCenterLatitudeLongitude(new Vector2d(djiDrone.FlightData.Latitude, djiDrone.FlightData.Longitude));
 
             SetCameraPositionToDrone(djiDrone);
         }
@@ -83,11 +78,6 @@ public class GPSManager : Singleton<GPSManager>
         // update map center position
         Map.UpdateMap(new Vector2d(drone.FlightData.Latitude, drone.FlightData.Longitude));
         drone.DroneGameObject.transform.position = Camera.transform.position;
-        if (DroneManager.RunningInUnityEditor)
-        {
-            Camera.parent.position = new Vector3(0, Camera.parent.position.y, 0);
-            Camera.localPosition = new Vector3(0, UserProfileManager.Instance.Height, 0);
-            Camera.eulerAngles = new Vector3(Camera.eulerAngles.x, drone.DroneGameObject.transform.eulerAngles.y, Camera.eulerAngles.z);
-        }    
+        drone.RotationOffset = drone.FlightData.Yaw;
     }
 }

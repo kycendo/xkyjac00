@@ -1,9 +1,7 @@
 ﻿/*
  * Head Up Display - manages visualizasion of HUD information
  * 
- * author: Marek Václavík
- * login: xvacla26
- * 
+ * authors: Marek Václavík(xvacla26), Martin Kyjac(xkyjac00)
  */
 
 using Mapbox.Unity.Map;
@@ -59,7 +57,6 @@ public class HeadUpDisplay : MonoBehaviour
 
         nextUpdate = GPSManager.droneUpdateInterval;
 
-        // TODO select drone from menu or sthg like that
         ToggleHeadUpDisplayElements(false);
         CheckIfDroneConnected();
     }
@@ -130,11 +127,6 @@ public class HeadUpDisplay : MonoBehaviour
         canvas.position = droneManager.ControlledDroneGameObject.transform.position;
         transform.rotation = Quaternion.LookRotation(transform.position - Camera.main.transform.position);
         this.transform.localScale = new Vector3(distanceToUser, distanceToUser, distanceToUser);
-        //Vector3 viewPos = Camera.main.WorldToScreenPoint(drone.transform.position);
-        //viewPos.x = (viewPos.x - (canvas.rect.width / 2)) * 2 + (canvas.rect.width / 2);
-        //viewPos.y = (viewPos.y - (canvas.rect.height / 2)) * 2 + (canvas.rect.height / 2);
-        //HUD.anchoredPosition = new Vector3(viewPos.x, viewPos.y, 0.0f);
-        //canvas.GetComponent<Canvas>().planeDistance = distanceToUser;
     }
 
     private bool CheckIfDroneConnected()
@@ -185,16 +177,18 @@ public class HeadUpDisplay : MonoBehaviour
         altitude = droneManager.ControlledDrone.RelativeAltitude;
         altitudeText.text = Mathf.Round(altitude * 100.0f) * 0.01f + "m";//Rounding
 
-        //size of altitude bar based on altitude value
-        altitudeIndicator.localScale = new Vector3(altitudeIndicator.localScale.x, altitude * AltitudeValueToTransformMultiplier, altitudeIndicator.localScale.z);
-        float altititudeIndicatorPositionY = AltitudeIndicatorOffset + (altitude * AltitudeValueToTransformMultiplier) / 2;
-        altitudeIndicator.localPosition = new Vector3(altitudeIndicator.localPosition.x, altititudeIndicatorPositionY, altitudeIndicator.localPosition.z);
+        //size of altitude bar based on altitude value, resize only in between 0-8m
+        if (altitude >= 0 && altitude <= 8)
+        {
+            altitudeIndicator.localScale = new Vector3(altitudeIndicator.localScale.x, altitude * AltitudeValueToTransformMultiplier, altitudeIndicator.localScale.z);
+            float altititudeIndicatorPositionY = AltitudeIndicatorOffset + (altitude * AltitudeValueToTransformMultiplier) / 2;
+            altitudeIndicator.localPosition = new Vector3(altitudeIndicator.localPosition.x, altititudeIndicatorPositionY, altitudeIndicator.localPosition.z);
+        }
 
         //set altitudeText transform next to a bar
         altitudeTextTransform.localPosition = new Vector3(altitudeTextTransform.localPosition.x, AltitudeTextOffset + (altitude * AltitudeValueToTransformMultiplier) / 2, altitudeTextTransform.localPosition.z);
 
         //changing color of bar based on altitude
-
         if (altitude < 0.5f)
         {
             altitutudeRenderer.material.SetColor("_Color", Color.red);
@@ -208,31 +202,32 @@ public class HeadUpDisplay : MonoBehaviour
             altitutudeRenderer.material.SetColor("_Color", Color.green);
         }
 
-        //TODO get battery capacity
-        float batt = (600 - Time.time) / 6; //600 seconds in %
-        batteryText.text = Mathf.Round(batt * 10.0f) * 0.1f + "%"; //Rounding
+        batteryIndicator.gameObject.SetActive(false);
+        batteryText.gameObject.SetActive(false);
+        //float batt = (600 - Time.time) / 6; //600 seconds in %
+        //batteryText.text = Mathf.Round(batt * 10.0f) * 0.1f + "%"; //Rounding
 
-        //baterry incicator bars
-        if (batt < 15.0f)
-        {
-            batteryIndicator.GetChild(0).gameObject.SetActive(false);
-        }
-        else if (batt < 35.0f)
-        {
-            batteryIndicator.GetChild(1).gameObject.SetActive(false);
-        }
-        else if (batt < 55.0f)
-        {
-            batteryIndicator.GetChild(2).gameObject.SetActive(false);
-        }
-        else if (batt < 75.0f)
-        {
-            batteryIndicator.GetChild(3).gameObject.SetActive(false);
-        }
-        else if (batt < 95.0f)
-        {
-            batteryIndicator.GetChild(4).gameObject.SetActive(false);
-        }
+        ////baterry incicator bars
+        //if (batt < 15.0f)
+        //{
+        //    batteryIndicator.GetChild(0).gameObject.SetActive(false);
+        //}
+        //else if (batt < 35.0f)
+        //{
+        //    batteryIndicator.GetChild(1).gameObject.SetActive(false);
+        //}
+        //else if (batt < 55.0f)
+        //{
+        //    batteryIndicator.GetChild(2).gameObject.SetActive(false);
+        //}
+        //else if (batt < 75.0f)
+        //{
+        //    batteryIndicator.GetChild(3).gameObject.SetActive(false);
+        //}
+        //else if (batt < 95.0f)
+        //{
+        //    batteryIndicator.GetChild(4).gameObject.SetActive(false);
+        //}
 
 
         //visibility of TARGET, showing navigation arrow
@@ -242,7 +237,6 @@ public class HeadUpDisplay : MonoBehaviour
         //float angleTargetDirection = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg;
         //navigationArrow.localEulerAngles = new Vector3(0, 0, angleTargetDirection);
         //navigationArrow.anchoredPosition = new Vector3((canvas.rect.width / 2), (canvas.rect.height / 2), 0.0f) + (targetDirection * NavigationArrowOffset);
-        var distanceTextY = distanceText.transform.position.y;
         var cameraPosition = MainCamera.position;           
         var dronePosition = drone.position;
         var modifiedAnchor = dronePosition;
@@ -253,8 +247,8 @@ public class HeadUpDisplay : MonoBehaviour
         }
         else
         {
-            dronePosition.y = 0;
-            cameraPosition.y = 0f;
+            dronePosition.y = 0 - UserProfileManager.Instance.Height;
+            cameraPosition.y = 0f - UserProfileManager.Instance.Height;
         }
 
         // Anchor position needs to be modified. When drone is inclinated, anchor X,Z positions are slightly changed
@@ -262,7 +256,7 @@ public class HeadUpDisplay : MonoBehaviour
 
         Vector3[] linePoints;
 
-        if (distanceToUser < 2 || distanceTextY < 0.5)
+        if (modifiedAnchor.y < 0.5 - UserProfileManager.Instance.Height)
         {
             lineRenderer.positionCount = 2;
             linePoints = new Vector3[] { cameraPosition, modifiedAnchor };
@@ -274,7 +268,7 @@ public class HeadUpDisplay : MonoBehaviour
         }
         lineRenderer.SetPositions(linePoints);
 
-        // based on distace to user, gameObject mirror drone is active or non-active
+        // based on distace to user, gameObject mirror drone and navigation line is active or non-active
         if (distanceToUser < 1.0f)
         {
             mirrorDrone.gameObject.SetActive(false);
@@ -284,6 +278,7 @@ public class HeadUpDisplay : MonoBehaviour
             mirrorDrone.gameObject.SetActive(true);
         }
 
+        lineRenderer.gameObject.SetActive(distanceToUser > 2f);
 
     }
 }
