@@ -17,6 +17,7 @@ namespace Mission
             {
                 _state = value;
                 ChangeColor(value);
+                ToggleText(value == WaypointState.Active);
             }
         }
         public GameObject WaypointGameObject { get; set; }
@@ -28,7 +29,6 @@ namespace Mission
             var position = map.GeoToWorldPosition(location, false);
 
             Location = location;
-            State = state;
 
             WaypointGameObject = Object.Instantiate(MissionManager.Instance.WaypointPrefab);
             WaypointGameObject.transform.parent = parent;
@@ -41,6 +41,9 @@ namespace Mission
 
             var renderer = WaypointGameObject.GetComponent<Renderer>();
             renderer.material.color = MissionManager.Instance.NonActiveWaypoint;
+
+            // Waypoint state must be set after game object is created because of custom setter
+            State = state;
         }
 
         private void ChangeColor(WaypointState state)
@@ -64,6 +67,12 @@ namespace Mission
             }
 
             renderer.material.color = color;
+        }
+
+        private void ToggleText(bool value)
+        {
+            var textForHololens = WaypointGameObject.transform.Find("TextForHololens");
+            textForHololens.gameObject.SetActive(value);
         }
     }
     public enum WaypointState

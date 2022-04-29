@@ -224,17 +224,28 @@ namespace DroneSimulator
             }
 
             //speed indicator
-            if (speedVelocity < 0.2f)
-            {
-                speedIndicator.gameObject.SetActive(false);
-            }
-            else
-            {
-                speedIndicator.gameObject.SetActive(true);
-                speedIndicator.rotation = Quaternion.LookRotation(speedDirection);
-                speedIndicator.GetChild(0).localScale = new Vector3(speedVelocity * 2, speedVelocity * 2, speedIndicator.GetChild(0).localScale.z); //size of tranform based on speedVelocity
+            RotateWaypointIndicator();
+        }
 
-            }
+        private void RotateWaypointIndicator()
+        {
+            var currentWaypoint = MissionManager.Instance.CurrentTarget;
+            speedIndicator.gameObject.SetActive(currentWaypoint != null);
+            if (currentWaypoint == null) return;
+
+            speedIndicator.rotation = Quaternion.LookRotation(currentWaypoint.WaypointGameObject.transform.position - drone.position);
+
+            //if (speedVelocity < 0.2f)
+            //{
+            //    speedIndicator.gameObject.SetActive(false);
+            //}
+            //else
+            //{
+            //    speedIndicator.gameObject.SetActive(true);
+            //    speedIndicator.rotation = Quaternion.LookRotation(speedDirection);
+            //    speedIndicator.GetChild(0).localScale = new Vector3(speedVelocity * 2, speedVelocity * 2, speedIndicator.GetChild(0).localScale.z); //size of tranform based on speedVelocity
+
+            //}
         }
     }
 }

@@ -30,6 +30,8 @@ public class Drone {
 
     private readonly IEnumerable<string> DronesWithZeroAltitude = new List<string> { "DJI-Mavic2", "DJI-MAVIC_PRO", "DJI-MAVIC_MINI" };
 
+    public void ClearPositionOffset() => CorrectionOffset = Vector3.zero;
+
     public float RelativeAltitude {
         get
         {

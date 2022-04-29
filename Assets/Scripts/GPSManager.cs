@@ -79,6 +79,7 @@ public class GPSManager : Singleton<GPSManager>
         Map.UpdateMap(new Vector2d(drone.FlightData.Latitude, drone.FlightData.Longitude));
         drone.DroneGameObject.transform.position = Camera.transform.position;
         drone.RotationOffset = drone.FlightData.Yaw;
+        drone.ClearPositionOffset();
 
         MissionManager.Instance.GenerateWaypoints();
         MissionManager.Instance.StartMission();
