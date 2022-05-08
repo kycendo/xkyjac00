@@ -88,7 +88,7 @@ public class Drone {
         var height = GetRelativeAltitude();
         var correction = UserProfileManager.Instance.DroneThreshold;
         var newVector = Rotate2DVector(new Vector2((float)flightData.VelocityX, (float)flightData.VelocityY), RotationOffset) * GPSManager.droneUpdateInterval;
-        newVector *= (float)(1 + correction);
+        newVector *= (float)(1.3m + correction);
         var dronePosition = DroneGameObject.transform.position;
         var newPosition = dronePosition + new Vector3(newVector.y, 0, newVector.x);
 
