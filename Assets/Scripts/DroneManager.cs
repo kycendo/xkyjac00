@@ -1,3 +1,9 @@
+/*
+ * DroneManager - parse message recieved from server and set drone params according its content
+ * 
+ * Author : Martin Kyjac (xkyjac00)
+ */
+
 using System;
 using System.Collections;
 using System.Collections.Generic;

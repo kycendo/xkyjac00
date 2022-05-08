@@ -1,9 +1,7 @@
 /*
  * Mirror Drone - manages rotation and value of distance to waypoints 
  * 
- * author: Marek Václavík
- * login: xvacla26
- * 
+ * authors: Marek Václavík (xvacla26), Martin Kyjac (xkyjac00)
  */
 
 using System.Collections;
@@ -26,7 +24,7 @@ public class WaypointManager : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         transform.LookAt(transform.position + cameraToFace.transform.rotation * Vector3.forward, cameraToFace.transform.rotation * Vector3.up);
-        float dist = Vector3.Distance(drone.position, transform.position);
+        float dist = Vector3.Distance(drone.position, transform.parent.position);
         distance.text = Mathf.Round(dist * 100.0f) * 0.01f + "m";
 
         var scale = (Vector3.Distance(cameraToFace.position, distance.transform.position) * 2) / 100;

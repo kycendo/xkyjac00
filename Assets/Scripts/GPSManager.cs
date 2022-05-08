@@ -1,6 +1,10 @@
+/*
+ * GPS manager - centering map and rotation calibration
+ * 
+ * Author : Martin Kyjac (xkyjac00)
+ */
+
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using Mapbox.Unity.Map;
 using Mapbox.Utils;
 using UnityEngine;
@@ -71,17 +75,18 @@ public class GPSManager : Singleton<GPSManager>
 
             SetCameraPositionToDrone(djiDrone);
         }
+        
+        MissionManager.Instance.GenerateWaypoints();
+        MissionManager.Instance.StartMission();
     }
 
     private void SetCameraPositionToDrone(Drone drone)
     {
         // update map center position
         Map.UpdateMap(new Vector2d(drone.FlightData.Latitude, drone.FlightData.Longitude));
+        Map.transform.eulerAngles = new Vector3(0, (float)-drone.FlightData.Yaw, 0);
         drone.DroneGameObject.transform.position = Camera.transform.position;
         drone.RotationOffset = drone.FlightData.Yaw;
         drone.ClearPositionOffset();
-
-        MissionManager.Instance.GenerateWaypoints();
-        MissionManager.Instance.StartMission();
     }
 }

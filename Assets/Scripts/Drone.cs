@@ -1,3 +1,9 @@
+/*
+ * Drone - class to store all drone data necessary to rendering
+ * 
+ * Author : Martin Kyjac (xkyjac00)
+ */
+
 using Mapbox.Unity.Map;
 using Mapbox.Utils;
 using System;
@@ -105,7 +111,7 @@ public class Drone {
         }
 
         var newRealPos = DroneManager.Instance.Map.GeoToWorldPosition(new Vector2d(flightData.Latitude, flightData.Longitude), false);
-        var position3d = GetRotatedPosition(newRealPos);
+        var position3d = newRealPos;//GetRotatedPosition(newRealPos);
 
         position3d.y = GetRelativeAltitude();
 

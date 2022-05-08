@@ -1,6 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+/*
+ * Handmenu Manager - process handmenu button events
+ * 
+ * Author : Martin Kyjac (xkyjac00)
+ */
 
 public class HandMenuManager : Singleton<HandMenuManager> {
 

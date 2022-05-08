@@ -44,6 +44,7 @@ public class HeadUpDisplay : MonoBehaviour
     private bool controlledDroneFound = false;
     private Transform NavigationLineAnchor;
     private float nextUpdate;
+
     // Start is called before the first frame update
     public void CustomStart()
     {
@@ -204,39 +205,10 @@ public class HeadUpDisplay : MonoBehaviour
 
         batteryIndicator.gameObject.SetActive(false);
         batteryText.gameObject.SetActive(false);
-        //float batt = (600 - Time.time) / 6; //600 seconds in %
-        //batteryText.text = Mathf.Round(batt * 10.0f) * 0.1f + "%"; //Rounding
-
-        ////baterry incicator bars
-        //if (batt < 15.0f)
-        //{
-        //    batteryIndicator.GetChild(0).gameObject.SetActive(false);
-        //}
-        //else if (batt < 35.0f)
-        //{
-        //    batteryIndicator.GetChild(1).gameObject.SetActive(false);
-        //}
-        //else if (batt < 55.0f)
-        //{
-        //    batteryIndicator.GetChild(2).gameObject.SetActive(false);
-        //}
-        //else if (batt < 75.0f)
-        //{
-        //    batteryIndicator.GetChild(3).gameObject.SetActive(false);
-        //}
-        //else if (batt < 95.0f)
-        //{
-        //    batteryIndicator.GetChild(4).gameObject.SetActive(false);
-        //}
 
 
         //visibility of TARGET, showing navigation arrow
         bool isVisible = IsVisibleFrom(HUD, Camera.main);
-        //navigationArrow.gameObject.SetActive(true);
-        //Vector3 targetDirection = (HUD.anchoredPosition - new Vector2((canvas.rect.width / 2), (canvas.rect.height / 2))).normalized;
-        //float angleTargetDirection = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg;
-        //navigationArrow.localEulerAngles = new Vector3(0, 0, angleTargetDirection);
-        //navigationArrow.anchoredPosition = new Vector3((canvas.rect.width / 2), (canvas.rect.height / 2), 0.0f) + (targetDirection * NavigationArrowOffset);
         var cameraPosition = MainCamera.position;           
         var dronePosition = drone.position;
         var modifiedAnchor = dronePosition;

@@ -150,14 +150,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 91264316}
-  m_LocalRotation: {x: -0, y: -0.5224984, z: -0, w: 0.8526403}
+  m_LocalRotation: {x: 0, y: 0.5150381, z: 0, w: 0.85716736}
   m_LocalPosition: {x: 1.1855696, y: 0.6729288, z: -0.46118116}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1780416095}
   m_Father: {fileID: 0}
   m_RootOrder: 10
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 62, z: 0}
 --- !u!1 &102197918
 GameObject:
   m_ObjectHideFlags: 0
@@ -476,7 +476,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad8878a530e52ab40ad0cc683854a034, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ServerHostname: 127.0.0.1
+  ServerHostname: 147.229.14.181
   Port: 5555
 --- !u!1 &197400515
 GameObject:
@@ -640,6 +640,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 801064675}
   - {fileID: 909924589}
   - {fileID: 1757954435}
   m_Father: {fileID: 0}
@@ -1485,10 +1486,10 @@ Transform:
   m_GameObject: {fileID: 801064674}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 909924589}
-  m_RootOrder: 1
+  m_Father: {fileID: 235684507}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &836599035
 PrefabInstance:
@@ -2065,9 +2066,8 @@ Transform:
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 839251020}
-  - {fileID: 801064675}
   m_Father: {fileID: 235684507}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &909924590
 MonoBehaviour:
@@ -3360,12 +3360,12 @@ PrefabInstance:
     - target: {fileID: -8328075835055782847, guid: 7ff44150071c07c4aa2a3e9450a5d67b,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.021596968
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8328075835055782847, guid: 7ff44150071c07c4aa2a3e9450a5d67b,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.011
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8328075835055782847, guid: 7ff44150071c07c4aa2a3e9450a5d67b,
         type: 3}
@@ -3736,12 +3736,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WaypointPrefab: {fileID: 4491915072583218406, guid: 8186bbab5d03f2f4393e212b08d67757,
     type: 3}
+  WaypointZonePrefab: {fileID: 4491915072583218406, guid: 1570ce249b98bcb489a5e6eeb55abe7a,
+    type: 3}
   ZonePrefab: {fileID: 20542113173187227, guid: 105a3b0eade23cd44a6d0005c36f9a16,
     type: 3}
   MissionGameObject: {fileID: 801064675}
-  ActiveWaypoint: {r: 1, g: 0.43569493, b: 0, a: 0.5882353}
-  ReachedWaypoint: {r: 0, g: 1, b: 0, a: 0.5882353}
-  NonActiveWaypoint: {r: 1, g: 0, b: 0, a: 0.5882353}
+  ChangeReachedWaypointsState: 1
+  ActiveWaypoint: {r: 1, g: 0.43569493, b: 0, a: 1}
+  ReachedWaypoint: {r: 0, g: 1, b: 0, a: 0.30980393}
+  NonActiveWaypoint: {r: 1, g: 0, b: 0, a: 0.7647059}
 --- !u!1 &1626272955
 GameObject:
   m_ObjectHideFlags: 0
@@ -3993,7 +3996,7 @@ RectTransform:
   m_Children:
   - {fileID: 2046137973}
   m_Father: {fileID: 235684507}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -10273,7 +10276,7 @@ MonoBehaviour:
   iconSprite: {fileID: 21300000, guid: 20f25674b9512834f88938d45ed495d7, type: 3}
   iconQuadRenderer: {fileID: 5684875915534795176}
   iconQuadTextureNameID: _MainTex
-  iconQuadTexture: {fileID: 2800000, guid: ed2f699f32ec17f4cad3423d2c449119, type: 3}
+  iconQuadTexture: {fileID: 2800000, guid: 559e1da0e65611c4f93ec931e1e6a8a2, type: 3}
   defaultButtonQuadMaterial: {fileID: 2100000, guid: fa419ab56051229449e3b813df8f295f,
     type: 2}
   iconSet: {fileID: 11400000, guid: 8b386ef895f7c924f8c4b03d1d3ed683, type: 2}
@@ -10645,8 +10648,8 @@ MonoBehaviour:
   OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: OnToggleHandMesh
+      - m_Target: {fileID: 1625922834}
+        m_MethodName: ResetMission
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -12349,7 +12352,7 @@ MonoBehaviour:
   iconSprite: {fileID: 21300000, guid: 20f25674b9512834f88938d45ed495d7, type: 3}
   iconQuadRenderer: {fileID: 6475768286981153289}
   iconQuadTextureNameID: _MainTex
-  iconQuadTexture: {fileID: 2800000, guid: 937867e9be7912d4a903cd401ee0a959, type: 3}
+  iconQuadTexture: {fileID: 2800000, guid: ac8550a474419054d9621216812fd098, type: 3}
   defaultButtonQuadMaterial: {fileID: 2100000, guid: fa419ab56051229449e3b813df8f295f,
     type: 2}
   iconSet: {fileID: 11400000, guid: 8b386ef895f7c924f8c4b03d1d3ed683, type: 2}
@@ -12983,19 +12986,8 @@ MonoBehaviour:
   OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: ToggleRecording
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_MethodName: SaveRecordedInput
+      - m_Target: {fileID: 1625922834}
+        m_MethodName: ToggleMissionStateChange
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -14717,7 +14709,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Menu Seven
+  m_text: Reset mission
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
   m_sharedMaterial: {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce,
@@ -14844,12 +14836,12 @@ GameObject:
   - component: {fileID: 5969810449390024106}
   - component: {fileID: 2654318399170676539}
   m_Layer: 0
-  m_Name: ButtonSeven
+  m_Name: ResetMission
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!82 &5684875917163539715
 AudioSource:
   m_ObjectHideFlags: 0
@@ -15910,7 +15902,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &6475768285388656317
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16072,7 +16064,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Menu Eight
+  m_text: Toggle mission states
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
   m_sharedMaterial: {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce,

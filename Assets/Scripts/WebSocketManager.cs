@@ -1,3 +1,9 @@
+/*
+ * WebsocketManager - class to connect to websocket server and send recieved messages to another managers
+ * 
+ * Author : Martin Kyjac (xkyjac00)
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,7 +18,7 @@ using WebSocketSharp;
 
 public class WebSocketManager : Singleton<WebSocketManager> {
 
-    public string ServerHostname = "pcbambusek.fit.vutbr.cz";
+    public string ServerHostname = "loaclhost";
     public int Port = 5555;
     private WebSocket websocket;
 
@@ -47,7 +53,6 @@ public class WebSocketManager : Singleton<WebSocketManager> {
 
 
     private void Start() {
-        //ConnectToServer("pcbambusek.fit.vutbr.cz", 5555);
         ConnectToServer(ServerHostname, Port);
     }
 
@@ -83,7 +88,7 @@ public class WebSocketManager : Singleton<WebSocketManager> {
         }
     }
 
-    public void ReconnectToServer(string domain = "pcbambusek.fit.vutbr.cz", int port = 5555) {
+    public void ReconnectToServer(string domain = "localhost", int port = 5555) {
         if (websocket != null) {
             websocket.Close();
         }
@@ -91,7 +96,6 @@ public class WebSocketManager : Singleton<WebSocketManager> {
     }
 
     private void HandleReceivedDataWS(object sender, MessageEventArgs e) {
-        //string data = Encoding.Default.GetString(e.Data);
         UnityMainThreadDispatcher.Instance().Enqueue(UpdateDroneData(e.Data));
     }
 

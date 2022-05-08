@@ -1,6 +1,11 @@
-﻿using Mapbox.Utils;
+﻿/*
+ * Mission manager - creating waypoints and zones according to GPS coordinates given
+ * 
+ * Author : Martin Kyjac (xkyjac00)
+ */
+
+using Mapbox.Utils;
 using Mission;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -8,20 +13,17 @@ using UnityEngine;
 public class MissionManager : Singleton<MissionManager>
 {
     public GameObject WaypointPrefab;
+    public GameObject WaypointZonePrefab;
     public GameObject ZonePrefab;
     public Transform MissionGameObject;
+    public bool ChangeReachedWaypointsState;
     public Color ActiveWaypoint;
     public Color ReachedWaypoint;
     public Color NonActiveWaypoint;
 
-    private IEnumerable<Waypoint> Waypoints = new List<Waypoint>();
+    private IEnumerable<MissionObject> Waypoints = new List<MissionObject>();
     private IEnumerable<Zone> Zones = new List<Zone>();
-    public Waypoint CurrentTarget;
-
-    public void Start()
-    {
-        
-    }
+    public MissionObject CurrentTarget;
 
     /// <summary>
     /// Check if drone reached active waypoint. If yes, set the next active waypoint
@@ -31,9 +33,9 @@ public class MissionManager : Singleton<MissionManager>
         var drone = DroneManager.Instance.ControlledDroneGameObject;
 
         if (CurrentTarget == null || drone == null) return;
-        var dronePosition = drone.transform.position;
+
         var waypointPosition = CurrentTarget.WaypointGameObject.transform.position;
-        if (Vector3.Distance(dronePosition, waypointPosition) <= CurrentTarget.WaypointGameObject.transform.lossyScale.x / 2)
+        if (CurrentTarget.IsInside(drone.transform))
         {
             CurrentTarget.State = WaypointState.Reached;
             CurrentTarget = Waypoints.FirstOrDefault(x => x.State == WaypointState.NotActive);
@@ -44,24 +46,33 @@ public class MissionManager : Singleton<MissionManager>
         }
     }
 
+    /// <summary>
+    /// Create waypoints and zones in scene and add them to
+    /// Waypoints and Zones properties
+    /// </summary>
     public void GenerateWaypoints()
     {
-        var waypointObjects = new List<Waypoint>();
+        // If mission already exists, need to remove all waypoints from scene
+        RemoveMissionElements();
+
+        var waypointObjects = new List<MissionObject>();
 
         var waypoints = new List<Vector2d>
         {
-            new Vector2d(49.227335036894324, 16.597139818462026),
-            new Vector2d(49.22743663200937, 16.597099585331513),
-            new Vector2d(49.22746816148536, 16.597248447914414)
+            new Vector2d(49.22730055356414, 16.597094392527428),
+            new Vector2d(49.22742667169548, 16.5971091446734),
+            new Vector2d(49.227448129262044, 16.59725398394325),
         };
 
         var zone = new Vector2d[2] { new Vector2d(49.22716285112991, 16.597185306750877), new Vector2d(49.22724780597617, 16.597090758882445) };
 
         foreach (var waypoint in waypoints)
         {
-            waypointObjects.Add(CreateWaypoint(waypoint, 2f));
+            var altitude = waypoints.IndexOf(waypoint) == 0 ? 6f : 2f;
+            waypointObjects.Add(CreateWaypoint(waypoint, altitude));
         }
 
+        waypointObjects.Add(CreateWaypointZone(new Vector2d(49.22724789838533, 16.597418592577164), 1.5f));
         Waypoints = waypointObjects;
 
         Zones = Zones.Append(CreateZone(zone));
@@ -76,6 +87,11 @@ public class MissionManager : Singleton<MissionManager>
     public Waypoint CreateWaypoint(Vector2d location, float altitude)
     {
         return new Waypoint(MissionGameObject, WaypointState.NotActive, location, altitude);
+    }
+
+    public WaypointZone CreateWaypointZone(Vector2d location, float diameter)
+    {
+        return new WaypointZone(MissionGameObject, WaypointState.NotActive, location, diameter);
     }
 
     public Zone CreateZone(Vector2d[] points)
@@ -98,6 +114,55 @@ public class MissionManager : Singleton<MissionManager>
         CurrentTarget = Waypoints.First();
         CurrentTarget.State = WaypointState.Active;
     }
+
+    public void ResetMission()
+    {
+        if (!Waypoints.Any())
+        {
+            return;
+        }
+
+        for (int i = 0; i < Waypoints.Count(); i++)
+        {
+            var newState = i == 0 ? WaypointState.Active : WaypointState.NotActive;
+            var waypoint = Waypoints.ElementAt(i);
+            waypoint.State = newState;
+            waypoint.WaypointGameObject.SetActive(true);
+        }
+
+        CurrentTarget = Waypoints.First();
+    }
+
+    /// <summary>
+    /// If ChangeReachedWaypointsState is set to true, waypoints
+    /// will change color and will display text according to their states.
+    /// </summary>
+    public void ToggleMissionStateChange()
+    {
+        ChangeReachedWaypointsState = !ChangeReachedWaypointsState;
+    }
+
+    /// <summary>
+    /// Delete all mission elemets - waypoints and zones
+    /// from scene and from MissionManager properties Waypoints and Zones
+    /// </summary>
+    private void RemoveMissionElements()
+    {
+        if (Waypoints.Any())
+        {
+            Waypoints = new List<Waypoint>();
+        }
+        if (Zones.Any())
+        {
+            Zones = new List<Zone>();
+        }
+
+        for (int i = 0; i < MissionGameObject.transform.childCount; i++)
+        {
+            MissionGameObject.transform.GetChild(i).Destroy();
+        }
+    }
+
 }
 
 public enum WaypointsOrder
