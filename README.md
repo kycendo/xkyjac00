@@ -1,8 +1,11 @@
-# xkyjac00
-Drone pilot user interface for AR
+# Visualization Tool for a Drone Pilot in Microsoft HoloLens 2
+## Bachelor thesis 2021/2022
+## Author: Martin Kyjac
+## University: Brno, University of Technology, Faculty of Information Technology
 
 Runs with Unity 2019.4.12f1
 
 To run in unity, open scene with name SampleScene.
 
-Before deploying to MS Hololens 2, it is necessary to add NuGet package SQLite.Universal(https://www.nuget.org/packages/SQLite.Universal/) to generated IL2CPP project.
+# Build and deploy
+Firstly generated build is needed. This build is created in unity. Open SampleScene if not opened already. From the top menu select File->Build settings. Then click on Build. This will generate IL2CPP project which is deployed to MS HoloLens 2. Open drone_outdoor_alpha.sln located in generated folder and add NuGet package SQLite.Universal(https://www.nuget.org/packages/SQLite.Universal/) to project drone_outdoor_alpha (Universal Windows Platform). Then connect MS HoloLens 2 with PC via cable, select Release option for ARM64 architecture and run. This will deploy the application into MS HoloLens 2.
