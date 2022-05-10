@@ -1,4 +1,10 @@
-﻿using TMPro;
+﻿/*
+ * UserProfile manager - class to store users data as height, threshold values.
+ * 
+ * Author : Martin Kyjac (xkyjac00)
+ */
+
+using TMPro;
 
 public class UserProfileManager : Singleton<UserProfileManager>
 {
