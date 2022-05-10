@@ -4976,7 +4976,7 @@ MonoBehaviour:
   DroneName: dji_mavic
   Username: test
   TresholdSetting: {fileID: 1042356953}
-  TrackingType: 0
+  TrackingType: 1
   TrackingTypeText: {fileID: 7457904603277045083}
   DisplayControlledDrone: 1
 --- !u!114 &17104228183970312
