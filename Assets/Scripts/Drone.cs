@@ -88,7 +88,7 @@ public class Drone {
         var height = GetRelativeAltitude();
         var correction = UserProfileManager.Instance.DroneThreshold;
         var newVector = Rotate2DVector(new Vector2((float)flightData.VelocityX, (float)flightData.VelocityY), RotationOffset) * GPSManager.droneUpdateInterval;
-        newVector *= (float)(1.3m + correction);
+        newVector *= (float)(1 + correction);
         var dronePosition = DroneGameObject.transform.position;
         var newPosition = dronePosition + new Vector3(newVector.y, 0, newVector.x);
 
@@ -111,7 +111,7 @@ public class Drone {
         }
 
         var newRealPos = DroneManager.Instance.Map.GeoToWorldPosition(new Vector2d(flightData.Latitude, flightData.Longitude), false);
-        var position3d = newRealPos;//GetRotatedPosition(newRealPos);
+        var position3d = newRealPos;
 
         position3d.y = GetRelativeAltitude();
 
@@ -172,8 +172,8 @@ public class Drone {
     {
         Vector2 result = new Vector2();
         var radians = (Math.PI / 180) * degrees;
-        result.x = (float)(vector.x * Math.Cos(radians) + vector.y * Math.Sin(radians));
-        result.y = (float)(vector.y * Math.Cos(radians) - vector.x * Math.Sin(radians));
+        result.x = (float)Math.Round(vector.x * Math.Cos(radians) + vector.y * Math.Sin(radians), 8);
+        result.y = (float)Math.Round(vector.y * Math.Cos(radians) - vector.x * Math.Sin(radians), 8);
         return result;
     }
 
